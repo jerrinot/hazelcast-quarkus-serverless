@@ -1,6 +1,9 @@
 name: publish
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -51,4 +54,4 @@ jobs:
           --platform managed \
           --allow-unauthenticated \
           --project ${{ secrets.GCP_PROJECT_ID }} \
-          --set-env-vars CLOUD_TOKEN ${{ secrets.CLOUD_TOKEN }}
+          --set-env-vars CLOUD_TOKEN=${{ secrets.CLOUD_TOKEN }}
