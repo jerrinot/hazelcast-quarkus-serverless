@@ -1,6 +1,5 @@
 package guides.hazelcast.quarkus;
 
-@SuppressWarnings("unused")
 public class CommandResponse {
 
     private String value;

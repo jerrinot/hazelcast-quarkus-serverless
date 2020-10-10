@@ -1,25 +1,19 @@
 package guides.hazelcast.quarkus;
 
-import com.hazelcast.client.HazelcastClient;
-import com.hazelcast.client.config.ClientConfig;
-import com.hazelcast.client.properties.ClientProperty;
 import com.hazelcast.core.HazelcastInstance;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.inject.Inject;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import java.util.concurrent.ConcurrentMap;
 
-@Path("/hazelcast")
+@Path("/")
 public class CommandController {
-
-//    @ConfigProperty(name = "CONTAINER_NAME")
-    private String containerName = "foo";
 
     @Inject
     HazelcastInstance hazelcastInstance;
@@ -29,18 +23,19 @@ public class CommandController {
     }
 
     @POST
-    @Path("/put")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public CommandResponse put(@QueryParam("key") String key, @QueryParam("value") String value) {
-        retrieveMap().put(key, value);
-        return new CommandResponse(value, containerName);
+    @Consumes({MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED})
+    public CommandResponse put(@PathParam("id") String id, String value) {
+        retrieveMap().put(id, value);
+        return new CommandResponse(value, "dummy");
     }
 
     @GET
-    @Path("/get")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public CommandResponse get(@QueryParam("key") String key) {
-        String value = retrieveMap().get(key);
-        return new CommandResponse(value, containerName);
+    public CommandResponse get(@PathParam("id") String id) {
+        String value = retrieveMap().get(id);
+        return new CommandResponse(value, "dummy");
     }
 }
